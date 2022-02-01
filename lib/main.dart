@@ -1,3 +1,4 @@
+import 'package:adn2/pages/loading.dart';
 import 'package:adn2/pages/verif_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
             //   title: args.title,
             //   message: args.message,
             // );
-            return VerifMail();
+            return Loading();
           },
         );
       },

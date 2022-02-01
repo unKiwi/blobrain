@@ -2,9 +2,13 @@
 
 import 'dart:async';
 
-import 'package:adn2/data/constants.dart';
+import 'package:adn2/data/data.dart';
+import 'package:adn2/data/http.dart';
+import 'package:adn2/data/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Loading extends StatefulWidget {
   @override
@@ -20,13 +24,50 @@ class _Loading extends State<Loading> {
       setState(() => _opacity = 1),
     });
 
+    // init();
+
     super.initState();
+  }
+
+  Future<void> init() async {
+    // get id
+    SharedPreferences prefs;
+    prefs = await SharedPreferences.getInstance();
+    Data.id = prefs.getString('id') ?? '';
+    
+    var res = await Http.req(
+      "loading",
+      {
+        "id": Data.id,
+      },
+    );
+
+    if (res != "ko") {
+      print("ok");
+    }
+    // cannot join the server
+    else {
+      await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          title: Text("Erreur de connection"),
+          content: Text("Impossible de se connecter au serveur"),
+          actions: [TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text('Réessayer'),
+          )],
+        ),
+        barrierDismissible: false,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColors.bgPrimary,
+      backgroundColor: Style.bgPrimary,
       body: AnimatedOpacity(
         duration: Duration(milliseconds: 1000),
         opacity: _opacity,
@@ -52,13 +93,10 @@ class _Loading extends State<Loading> {
                       alignment: Alignment.topCenter,
                       child: FittedBox(
                         fit: BoxFit.contain,
-                        child: Text(
-                          "A D N ²",
-                          style: TextStyle(
-                            fontSize: MediaQuery.of(context).size.height,
-                            color: Colors.white,
-                          ),
-                        ),
+                        child: TextButton(
+          onPressed: () {init();},
+          child: const Text('Réessayer'),
+        )
                       ),
                     ),
                   ),
