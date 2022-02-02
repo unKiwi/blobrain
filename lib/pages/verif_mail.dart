@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 
+import 'package:adn2/components/settings.dart';
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/http.dart';
 import 'package:adn2/data/style.dart';
@@ -108,6 +109,13 @@ class VerifMail extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(routeTo(Settings()));
+        },
+        backgroundColor: Style.bgSecondary,
+        child: const Icon(Icons.settings),
       ),
     );
   }
