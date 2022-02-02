@@ -1,6 +1,12 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors, avoid_print, unused_field, prefer_const_literals_to_create_immutables
+// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors, avoid_print, unused_field, prefer_const_literals_to_create_immutables, deprecated_member_use
 
+import 'dart:convert';
+
+import 'package:adn2/data/data.dart';
+import 'package:adn2/data/http.dart';
 import 'package:adn2/data/style.dart';
+import 'package:adn2/data/util.dart';
+import 'package:adn2/pages/loading.dart';
 import 'package:flutter/material.dart';
 
 class VerifMail extends StatelessWidget {
@@ -42,16 +48,57 @@ class VerifMail extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () => {},
-                              child: Text(
-                                "Renvoyer l'email",
-                                textScaleFactor: 2,
+                        SizedBox(height: 40,),
+                        Container(
+                          height: 50.0,
+                          margin: EdgeInsets.all(10),
+                          child: RaisedButton(
+                            onPressed: () async {
+                              var res = await Http.req(
+                                "resendMail",
+                                {
+                                  "id": Data.id,
+                                },
+                              );
+
+                              if (res != "ko") {
+                                final data = jsonDecode(res.body);
+                                if (data["res"] == "ok") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Email envoyé"),
+                                    ),
+                                  );
+                                }
+                                else {
+                                  Navigator.of(context).pushReplacement(routeTo(Loading()));
+                                }
+                              }
+                            },
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(80.0),
+                            ),
+                            padding: const EdgeInsets.all(0.0),
+                            child: Ink(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [Color(0xff374ABE), Color(0xff64B6FF)],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                ),
+                                borderRadius: BorderRadius.circular(30.0)),
+                              child: Container(
+                                constraints:
+                                  BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  "Renvoyer l'email",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),

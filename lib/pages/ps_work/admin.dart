@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-class NoGame extends StatelessWidget {
+class Admin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Text("NoGame"),
+      body: Text("admin"),
     );
   }
 }

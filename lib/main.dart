@@ -1,18 +1,17 @@
+// ignore_for_file: use_key_in_widget_constructors
+
 import 'package:adn2/pages/loading.dart';
-import 'package:adn2/pages/verif_mail.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 // import 'package:flutter/services.dart';
 void main() {
   setUrlStrategy(PathUrlStrategy());
-  runApp(const MyApp());
+  runApp(MyApp());
 
   // SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive, overlays: []);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
