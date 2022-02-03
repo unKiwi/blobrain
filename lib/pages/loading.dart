@@ -1,19 +1,16 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors, avoid_print, unused_field
+// ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors, avoid_print, unused_field, avoid_web_libraries_in_flutter
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/http.dart';
 import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
-import 'package:adn2/pages/ps_work/admin.dart';
-import 'package:adn2/pages/buy.dart';
-import 'package:adn2/pages/ps_work/game.dart';
 import 'package:adn2/pages/account/login.dart';
-import 'package:adn2/pages/no_game.dart';
-import 'package:adn2/pages/ps_work/pro.dart';
-import 'package:adn2/pages/verif_mail.dart';
+import 'package:adn2/pages/account/register.dart';
+import 'package:adn2/pages/account/reset_passwd.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -29,13 +26,13 @@ class _Loading extends State<Loading> {
   double _opacity = 0;
   final now = DateTime.now().millisecondsSinceEpoch;
 
-  int _timeOut = 500;
-  int _animationDuration = 1000;
+  int _timeOut = 0; // 500
+  int _animationDuration = 0; // 1000
   late int _totalDuration;
 
   @override
   void initState() {
-    _totalDuration = _timeOut + _animationDuration + 500;
+    _totalDuration = _timeOut + _animationDuration + 0; // 500
 
     Timer(Duration(milliseconds: _timeOut), () => {
       setState(() => _opacity = 1),
@@ -51,7 +48,18 @@ class _Loading extends State<Loading> {
     prefs = await SharedPreferences.getInstance();
     Data.id = prefs.getString('id') ?? '';
 
-    sendReq();
+    if (window.location.pathname == "/register") {
+      Navigator.of(context).push(routeTo(Login()));
+      Navigator.of(context).push(routeTo(Register()));
+    }
+    else if (window.location.pathname == "/resetPassword") {
+      Navigator.of(context).push(routeTo(Login()));
+      Navigator.of(context).push(routeTo(ResetPassword()));
+    }
+    else {
+      sendReq();
+    }
+    
   }
 
   Future<void> sendReq() async {
@@ -69,36 +77,14 @@ class _Loading extends State<Loading> {
       });
       Timer(Duration(milliseconds: duration + _animationDuration), () {
         final data = jsonDecode(res.body);
-        if (data['res'] == "verifAccount") {
-          Navigator.of(context).pushReplacement(routeTo(VerifMail()));
-        }
-        else if (data['res'] == "newId") {
+        if (data['res'] == "newId") {
           prefs.setString('id', data['newId']);
           Data.id = data['newId'];
 
           Navigator.of(context).pushReplacement(routeTo(Login()));
         }
-        else if (data['res'] == "adminInfo") {
-          Data.updateGameState(data["game"]);
-          Data.lsUser = data["user"];
-          Data.lsInvite = data["invite"];
-          Navigator.of(context).pushReplacement(routeTo(Admin()));
-        }
-        else if (data['res'] == "proInfo") {
-          Data.updateGameState(data["game"]);
-
-          Navigator.of(context).pushReplacement(routeTo(Pro()));
-        }
-        else if (data['res'] == "userInfo") {
-          Data.updateGameState(data["game"]);
-
-          Navigator.of(context).pushReplacement(routeTo(Game()));
-        }
-        else if (data['res'] == "noGame") {
-          Navigator.of(context).pushReplacement(routeTo(NoGame()));
-        }
-        else if (data['res'] == "testOver") {
-          Navigator.of(context).pushReplacement(routeTo(Buy()));
+        else {
+          nextPage(context, data);
         }
       });
     }

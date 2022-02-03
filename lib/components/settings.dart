@@ -83,8 +83,8 @@ class Settings extends StatelessWidget {
           req(context);
         },
         backgroundColor: Colors.red[700],
-        child: const Icon(Icons.exit_to_app),
-      )
+        child: Icon(Icons.exit_to_app),
+      ),
     );
   }
 }

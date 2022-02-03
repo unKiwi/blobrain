@@ -7,7 +7,6 @@ import 'package:adn2/data/data.dart';
 import 'package:adn2/data/http.dart';
 import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
-import 'package:adn2/pages/loading.dart';
 import 'package:flutter/material.dart';
 
 class VerifMail extends StatelessWidget {
@@ -72,7 +71,7 @@ class VerifMail extends StatelessWidget {
                                   );
                                 }
                                 else {
-                                  Navigator.of(context).pushReplacement(routeTo(Loading()));
+                                  nextPage(context, data);
                                 }
                               }
                             },

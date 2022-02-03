@@ -1,6 +1,8 @@
 // ignore_for_file: use_key_in_widget_constructors, prefer_final_fields, prefer_const_constructors, avoid_print, unused_field, prefer_const_literals_to_create_immutables
 
+import 'package:adn2/components/settings.dart';
 import 'package:adn2/data/style.dart';
+import 'package:adn2/data/util.dart';
 import 'package:flutter/material.dart';
 
 class Buy extends StatelessWidget {
@@ -46,6 +48,13 @@ class Buy extends StatelessWidget {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(routeTo(Settings()));
+        },
+        backgroundColor: Style.bgSecondary,
+        child: const Icon(Icons.settings),
       ),
     );
   }

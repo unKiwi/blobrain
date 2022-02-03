@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
 
 import 'dart:convert';
 
@@ -6,14 +6,12 @@ import 'package:adn2/data/conf.dart';
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
-import 'package:adn2/pages/loading.dart';
+import 'package:adn2/pages/account/forgot_password.dart';
 import 'package:adn2/pages/account/register.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class Login extends StatefulWidget {
-  const Login({Key? key}) : super(key: key);
-
   @override
   _Login createState() {
     return _Login();
@@ -43,35 +41,16 @@ class _Login extends State<Login> {
 
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
-      if (data['res'] == "userInfo") {
-        Navigator.of(context).pushReplacement(routeTo(Loading()));
+      if (data['res'] != "error") {
+        nextPage(context, data);
       }
       else {
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Erreur !'),
-              content: Text(
-                data['error'],
-                style: TextStyle(color: Colors.red.shade500),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Text('OK'),
-                ),
-              ],
-            );
-          },
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data['error']),
+          ),
         );
       }
-    }
-    else {
-      // relaunch req
-      // req(context);
     }
   }
 
@@ -182,7 +161,7 @@ class _Login extends State<Login> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40,),
+                        SizedBox(height: 40,),
                         Container(
                           height: 50.0,
                           margin: EdgeInsets.all(10),
@@ -196,7 +175,7 @@ class _Login extends State<Login> {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(80.0),
                             ),
-                            padding: const EdgeInsets.all(0.0),
+                            padding: EdgeInsets.all(0.0),
                             child: Ink(
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
@@ -223,7 +202,14 @@ class _Login extends State<Login> {
                           onPressed: () {
                             Navigator.of(context).push(routeTo(Register()));
                           },
-                          child: Text("Pas de compte ?", style: TextStyle(color: Colors.grey),),
+                          child: Text("Inscription", style: TextStyle(color: Colors.grey),),
+                        ),
+                        SizedBox(height: 20,),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).push(routeTo(ForgotPassword()));
+                          },
+                          child: Text("Mot de passe oublié", style: TextStyle(color: Colors.grey),),
                         ),
                       ],
                     ),

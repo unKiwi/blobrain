@@ -1,3 +1,10 @@
+import 'package:adn2/data/data.dart';
+import 'package:adn2/pages/buy.dart';
+import 'package:adn2/pages/no_game.dart';
+import 'package:adn2/pages/ps_work/admin.dart';
+import 'package:adn2/pages/ps_work/game.dart';
+import 'package:adn2/pages/ps_work/pro.dart';
+import 'package:adn2/pages/verif_mail.dart';
 import 'package:flutter/material.dart';
 
 Route routeTo(Widget page) {
@@ -16,4 +23,32 @@ Route routeTo(Widget page) {
       );
     },
   );
+}
+
+void nextPage(context, data) {
+  if (data['res'] == "verifAccount") {
+    Navigator.of(context).pushReplacement(routeTo(VerifMail()));
+  }
+  else if (data['res'] == "adminInfo") {
+    Data.updateGameState(data["game"]);
+    Data.lsUser = data["user"];
+    Data.lsInvite = data["invite"];
+    Navigator.of(context).pushReplacement(routeTo(Admin()));
+  }
+  else if (data['res'] == "proInfo") {
+    Data.updateGameState(data["game"]);
+
+    Navigator.of(context).pushReplacement(routeTo(Pro()));
+  }
+  else if (data['res'] == "userInfo") {
+    Data.updateGameState(data["game"]);
+
+    Navigator.of(context).pushReplacement(routeTo(Game()));
+  }
+  else if (data['res'] == "noGame") {
+    Navigator.of(context).pushReplacement(routeTo(NoGame()));
+  }
+  else if (data['res'] == "testOver") {
+    Navigator.of(context).pushReplacement(routeTo(Buy()));
+  }
 }

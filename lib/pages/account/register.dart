@@ -7,7 +7,6 @@ import 'package:adn2/data/conf.dart';
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
-import 'package:adn2/pages/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -46,36 +45,17 @@ class _Register extends State<Register> {
 
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
-      if (data['res'] == "userInfo") {
+      if (data['res'] != "error") {
         Navigator.of(context).pop();
-        Navigator.of(context).pushReplacement(routeTo(Loading()));
+        nextPage(context, data);
       }
       else {
-        await showDialog<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Erreur !'),
-              content: Text(
-                data['lsError'].join('\n'),
-                style: TextStyle(color: Colors.red.shade500),
-              ),
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
-          },
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(data['lsError'].join('\n')),
+          ),
         );
       }
-    }
-    else {
-      // relaunch req
-      // req(context);
     }
   }
 
@@ -149,7 +129,7 @@ class _Register extends State<Register> {
         controller: passwordController,
         obscureText: true,
         decoration: const InputDecoration(
-          labelText: "Confirmez votre mot de passe",
+          labelText: "Mot de passe",
           hintStyle: TextStyle(color: Colors.grey),
           border: InputBorder.none
         ),
@@ -320,7 +300,7 @@ class _Register extends State<Register> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text("J'ai un compte ?", style: TextStyle(color: Colors.grey),),
+                          child: Text("Connexion", style: TextStyle(color: Colors.grey),),
                         ),
                       ],
                     ),

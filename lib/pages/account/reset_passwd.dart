@@ -1,6 +1,7 @@
-// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors
+// ignore_for_file: deprecated_member_use, prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, avoid_web_libraries_in_flutter
 
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/http.dart';
@@ -8,41 +9,43 @@ import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
 import 'package:flutter/material.dart';
 
-class ForgotPassword extends StatefulWidget {
+class ResetPassword extends StatefulWidget {
   @override
-  _ForgotPassword createState() {
-    return _ForgotPassword();
+  _ResetPassword createState() {
+    return _ResetPassword();
   }
 }
 
-class _ForgotPassword extends State<ForgotPassword> {
+class _ResetPassword extends State<ResetPassword> {
   final _formKey = GlobalKey<FormState>();
 
   // Create a text controller and use it to retrieve the current value
   // of the TextField.
-  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final passwordConfirmController = TextEditingController();
 
   Future<void> sendReq(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       var res = await Http.req(
-        "forgotPasswd",
+        "resetPasswd",
         {
           "id": Data.id,
-          "email": emailController.text,
+          "token": window.location.href.split('?')[1],
+          "password": passwordController.text,
         },
       );
 
       if (res != "ko") {
         final data = jsonDecode(res.body);
-        if (data["res"] == "ok") {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Email envoyé"),
-            ),
-          );
+        if (data["res"] != "ko") {
+          nextPage(context, data);
         }
         else {
-          nextPage(context, data);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Le lien que vous utilisez est invalide"),
+            ),
+          );
         }
       }
     }
@@ -51,7 +54,8 @@ class _ForgotPassword extends State<ForgotPassword> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    emailController.dispose();
+    passwordController.dispose();
+    passwordConfirmController.dispose();
     super.dispose();
   }
 
@@ -78,7 +82,7 @@ class _ForgotPassword extends State<ForgotPassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text("Mot de passe oublié", style: TextStyle(color: Colors.white, fontSize: 40),),
+                  Text("Réinitialiser mon mot de passe", style: TextStyle(color: Colors.white, fontSize: 40),),
                 ],
               ),
             ),
@@ -117,13 +121,35 @@ class _ForgotPassword extends State<ForgotPassword> {
                                   child: TextFormField(
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
-                                        return 'Saisisez votre email';
+                                        return 'Saisisez votre mot de passe';
                                       }
                                       return null;
                                     },
-                                    controller: emailController,
-                                    decoration: InputDecoration(
-                                      labelText: "Email",
+                                    controller: passwordController,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      labelText: "Mot de passe",
+                                      hintStyle: TextStyle(color: Colors.grey),
+                                      border: InputBorder.none
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    border: Border(bottom: BorderSide(color: Colors.grey.shade200))
+                                  ),
+                                  child: TextFormField(
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty || passwordConfirmController.text != passwordController.text) {
+                                        return 'Saisisez votre mot de passe';
+                                      }
+                                      return null;
+                                    },
+                                    controller: passwordConfirmController,
+                                    obscureText: true,
+                                    decoration: const InputDecoration(
+                                      labelText: "Confirmez votre mot de passe",
                                       hintStyle: TextStyle(color: Colors.grey),
                                       border: InputBorder.none
                                     ),
@@ -158,7 +184,7 @@ class _ForgotPassword extends State<ForgotPassword> {
                                   BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
                                 alignment: Alignment.center,
                                 child: Text(
-                                  "Envoyer l'email",
+                                  "Réinitialiser mon mot de passe",
                                   textAlign: TextAlign.center,
                                   style: TextStyle(color: Colors.white, fontSize: 15),
                                 ),
