@@ -47,7 +47,11 @@ class _Login extends State<Login> {
       else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(data['error']),
+            backgroundColor: Style.bgPopup,
+            content: Text(
+              data['error'],
+              textScaleFactor: 2,
+            ),
           ),
         );
       }

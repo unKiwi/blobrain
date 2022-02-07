@@ -43,7 +43,11 @@ class _ResetPassword extends State<ResetPassword> {
         else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Le lien que vous utilisez est invalide"),
+              backgroundColor: Style.bgPopup,
+              content: Text(
+                "Le lien que vous utilisez est invalide",
+                textScaleFactor: 2,
+              ),
             ),
           );
         }

@@ -66,6 +66,7 @@ class VerifMail extends StatelessWidget {
                                 if (data["res"] == "ok") {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
+                                      backgroundColor: Style.bgPopup,
                                       content: Text("Email envoyé"),
                                     ),
                                   );

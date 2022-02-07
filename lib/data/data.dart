@@ -1,9 +1,11 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 class Data {
   // user
   static late String id;
   static late List lsUser;
   static late List lsInvite;
-  static bool inGame = false;
+  static bool inGame = true;
 
   // level
   static late int level;
@@ -11,6 +13,7 @@ class Data {
 
   // timer
   static late int timerSeconds;
+  static late int timeToReset;
 
   // pion
   static late int currentShape;
@@ -25,6 +28,7 @@ class Data {
   static late int cote;
   static late List pionFix;
   static late List pionVar;
+  static late var error;
 
   static void updateGameState(data) {
     grid = data['grid'];
@@ -42,6 +46,7 @@ class Data {
 
     currentColor = (cote / 2).truncate();
     currentShape = (cote / 2).truncate();
+    error = null;
 
     pionVar = [];
     pionFix = [];

@@ -93,7 +93,7 @@ class _Loading extends State<Loading> {
       await showDialog(
         context: context,
         builder: (_) => AlertDialog(
-          backgroundColor: Colors.blueGrey[800],
+          backgroundColor: Style.bgPopup,
           title: Text(
             "Erreur de connection",
             textScaleFactor: 2,
@@ -114,7 +114,7 @@ class _Loading extends State<Loading> {
               Navigator.pop(context);
               sendReq();
             },
-            child: const Text(
+            child: Text(
               'Réessayer',
               textScaleFactor: 2,
             ),

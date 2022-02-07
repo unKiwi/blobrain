@@ -37,7 +37,11 @@ class _ForgotPassword extends State<ForgotPassword> {
         if (data["res"] == "ok") {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Email envoyé"),
+              backgroundColor: Style.bgPopup,
+              content: Text(
+                "Email envoyé",
+                textScaleFactor: 2,
+              ),
             ),
           );
         }

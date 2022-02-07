@@ -52,7 +52,11 @@ class _Register extends State<Register> {
       else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(data['lsError'].join('\n')),
+            backgroundColor: Style.bgPopup,
+            content: Text(
+              data['lsError'].join('\n'),
+              textScaleFactor: 2,
+            ),
           ),
         );
       }
