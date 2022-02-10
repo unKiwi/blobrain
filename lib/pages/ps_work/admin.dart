@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:adn2/components/admin/create_invite.dart';
 import 'package:adn2/components/admin/ls_invite.dart';
 import 'package:adn2/components/settings.dart';
 import 'package:adn2/data/style.dart';
@@ -64,7 +65,7 @@ class _Admin extends State<Admin> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          
+          Navigator.of(context).push(routeTo(CreateInviteAdmin()));
         },
         backgroundColor: Style.bgSecondary,
         child: Icon(Icons.add),

@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, no_logic_in_create_state, must_be_immutable, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, prefer_final_fields
 
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
@@ -22,7 +23,7 @@ class Grid extends StatelessWidget {
       List<Widget> _row = [];
       for (int j = 0; j < Data.cote; j++) {
         _row.add(Expanded(
-            child: Case(j, i),
+            child: Case(i, j),
           ),
         );
       }
@@ -62,62 +63,236 @@ class _Case extends State<Case> {
   late int y;
   late int color;
   late int shape;
-  bool isPionFix = false;
-  bool isPionVar = false;
-  bool inError = false;
+  double _angle = Random().nextInt(360) * pi / 180;
+  late bool isPionFix;
+  late bool isPionVar;
+  late bool inError;
   late Color _bgColor;
+  late Widget _pion;
+  late Timer timer;
 
   _Case(this.x, this.y);
 
+  Future<void> reqSave(BuildContext context) async {
+    // convert pionVar to string
+    var movePlayed = [];
+    for (var p in Data.pionVar) {
+      movePlayed.add("${p['x'] + 1}${p['y'] + 1}${p['color']}${p['shape']}");
+    }
+
+    final res = await http.post(
+      Uri.parse(Conf.uri + 'save'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode({
+        'id': Data.id,
+        'grid': Data.grid,
+        'movePlayed': movePlayed.join(" "),
+        'gridTime': Data.timerSeconds,
+      }),
+    );
+
+    if (res.statusCode == 200) {
+      final data = jsonDecode(res.body);
+      if (data['res'] == "noConnected") {
+        Navigator.of(context).pushReplacement(routeTo(Login()));
+      }
+      else if (data["res"] == "oldGame") {
+        Navigator.of(context).pushReplacement(routeTo(Game()));
+      }
+      else if (data["res"] == "gridError") {
+        Data.error = {
+          "type": data["type"],
+          "num": data["num"],
+        };
+        update();
+        setState(() {});
+        Timer(Duration(milliseconds: 75), () => {
+          Data.error = null
+        });
+      }
+      else if (data["res"] == "newGame") {
+        Data.error = {
+          "type": "rien",
+        };
+        
+        int lastTimer = Data.timerSeconds;
+        Data.inGame = false;
+        Data.updateGameState(data["game"]);
+        
+        await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Style.bgPopup,
+              title: Text(
+                'C\'est gagné !',
+                textScaleFactor: 2,
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: Text(
+                "Félicitations, vous avez réussi cette grille en ${((lastTimer) ~/ 60).toString()} minutes et ${((lastTimer) % 60).toString()} secondes",
+                textScaleFactor: 2,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 87, 168, 91),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Data.inGame = true;
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(routeTo(Game()));
+                  },
+                  child: Text(
+                    'Continuer',
+                    textScaleFactor: 2,
+                  ),
+                ),
+              ],
+            );
+          },
+        ).then((val) {
+          Data.inGame = true;
+          Navigator.of(context).pushReplacement(routeTo(Game()));
+        });
+      }
+    }
+  }
+
+  void update() {
+    isPionFix = false;
+    isPionVar = false;
+    inError = false;
+
+    // define _bgColor
+    // define isPionFix
+    for (var p in Data.pionFix) {
+      if (p['x'] == x && p['y'] == y) {
+        isPionFix = true;
+        color = p['color'];
+        shape = p['shape'];
+        break;
+      }
+    }
+
+    // define inError
+    if (Data.error != null && (Data.error["type"] == "row" && Data.error["num"] == y || Data.error["type"] == "column" && Data.error["num"] == x)) {
+      inError = true;
+    }
+    
+    if (isPionFix) {
+      _bgColor = Colors.blueGrey.shade200;
+    }
+    else {
+      // define isPionVar
+      for (var p in Data.pionVar) {
+        if (p['x'] == x && p['y'] == y) {
+          isPionVar = true;
+          color = p['color'];
+          shape = p['shape'];
+          break;
+        }
+      }
+
+      if (inError) {
+        _bgColor = Colors.red.shade100;
+      }
+      else {
+        _bgColor = Style.bgCase;
+      }
+    }
+
+    // define _pion
+    if (isPionFix || isPionVar) {
+      _pion = Center(
+        child: Transform.rotate(
+          angle: _angle,
+          child: FractionallySizedBox(
+            heightFactor: 0.7,
+            widthFactor: 0.7,
+            child: SvgPicture.asset(
+              "assets/shapes/${Data.lsShape[shape]}/${Data.lsColor[color]}.svg",
+            ),
+          ),
+        ),
+      );
+    }
+    else {
+      _pion = Container();
+    }
+    if (!isPionFix) {
+      _pion = ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: EdgeInsets.all(0),
+          primary: Colors.transparent,
+          shadowColor: Colors.transparent
+        ),
+        onPressed: () {
+          // case is empty
+          if (!isPionVar) {
+            Data.pionVar.add({'x': x, 'y': y, 'color': Data.currentColor, 'shape': Data.currentShape});
+          }
+          // case is not empty
+          else {
+            for (var p in Data.pionVar) {
+              if (p['x'] == x && p['y'] == y) {
+                if (p["color"] != Data.currentColor || p["shape"] != Data.currentShape) {
+                  if (Data.currentColor == 0 && Data.currentShape == 0) {
+                    // remove pion
+                    Data.pionVar.removeWhere((e) => e == p);
+                    Data.error = {
+                      "type": "rien",
+                    };
+                  }
+                  else {
+                    // update pion
+                    p['color'] = Data.currentColor;
+                    p['shape'] = Data.currentShape;
+                  }
+                }
+                break;
+              }
+            }
+          }
+
+          update();
+          setState(() {});
+          reqSave(context);
+        },
+        child: _pion,
+      );
+    }
+  }
+
   @override
   void initState() {
-    
+    timer = Timer.periodic(Duration(milliseconds: 50), (timer) {
+      if (Data.error != null && !isPionFix) {
+        update();
+        setState(() {});
+      }
+    });
 
+    update();
+    reqSave(context);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        // define _bgColor
-        // define isPionFix
-        for (var p in Data.pionFix) {
-          if (p['x'] == x && p['y'] == y) {
-            isPionFix = true;
-            color = p['color'];
-            shape = p['shape'];
-            break;
-          }
-        }
-
-        // define inError
-        if (Data.error != null && (Data.error["type"] == "row" && Data.error["num"] == y || Data.error["type"] == "column" && Data.error["num"] == x)) {
-          inError = true;
-        }
-
-        if (isPionFix) {
-          _bgColor = Colors.blueGrey.shade200;
-        }
-        else {
-          // define isPionVar
-          for (var p in Data.pionVar) {
-            if (p['x'] == x && p['y'] == y) {
-              isPionVar = true;
-              color = p['color'];
-              shape = p['shape'];
-              break;
-            }
-          }
-
-          if (inError) {
-            _bgColor = Colors.red.shade100;
-          }
-          else {
-            _bgColor = Style.bgCase;
-          }
-        }
-
         return Container(
           decoration: BoxDecoration(
             color: _bgColor,
@@ -126,45 +301,7 @@ class _Case extends State<Case> {
               width: constraints.maxHeight / 100,
             ),
           ),
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              // define pion
-              Widget pion = Center(
-                child: Transform.rotate(
-                  angle: Random().nextInt(360) * pi / 180,
-                  child: FractionallySizedBox(
-                    heightFactor: 0.7,
-                    widthFactor: 0.7,
-                    child: SvgPicture.asset(
-                      "assets/shapes/${Data.lsShape[shape]}/${Data.lsColor[color]}.svg",
-                    ),
-                  ),
-                ),
-              );
-
-              if (!isPionFix) {
-                return ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.all(0),
-                    primary: Colors.transparent,
-                    shadowColor: Colors.transparent
-                  ),
-                  onPressed: () {},
-                  child: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      if (!isPionVar) {
-                        return pion;
-                      }
-
-                      return Container();
-                    }
-                  ),
-                );
-              }
-              
-              return pion;
-            }
-          ),
+          child: _pion,
         );
       },
     );
