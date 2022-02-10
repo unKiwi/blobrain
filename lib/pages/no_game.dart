@@ -73,7 +73,7 @@ class _NoGame extends State<NoGame> {
                       text: TextSpan(
                         children: <TextSpan>[
                           TextSpan(
-                            text: "Vous avez assez joué aujourd'hui\nÀ dans $timerText pour les prochaines grilles quotidiennes ... ",
+                            text: "Vous avez assez joué aujourd'hui...\nMais revenez dans $timerText pour vos prochaines grilles quotidiennes ... ",
                             style: TextStyle(color: Colors.white),
                           ),
                           TextSpan(

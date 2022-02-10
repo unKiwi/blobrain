@@ -43,15 +43,12 @@ class BtnGivUp extends StatelessWidget {
       heightFactor: 0.3,
       child: LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
-          double _corner = constraints.maxHeight * 0.3;
           double _fontSize = constraints.maxHeight * 0.5;
           
           return ElevatedButton(
             style: ElevatedButton.styleFrom(
               primary: Colors.red,
-              shape: BeveledRectangleBorder(
-                borderRadius: BorderRadius.circular(_corner),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(MediaQuery.of(context).size.height)),
               textStyle: TextStyle(fontSize: _fontSize),
             ),
             onPressed: () async {

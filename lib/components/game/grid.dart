@@ -9,6 +9,7 @@ import 'package:adn2/data/data.dart';
 import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
 import 'package:adn2/pages/account/login.dart';
+import 'package:adn2/pages/no_game.dart';
 import 'package:adn2/pages/ps_work/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -156,10 +157,15 @@ class _Case extends State<Case> {
               ],
             );
           },
+          barrierDismissible: false,
         ).then((val) {
           Data.inGame = true;
           Navigator.of(context).pushReplacement(routeTo(Game()));
         });
+      }
+      else if (data["res"] == "noGame") {
+        Data.timeToReset = data["timeToReset"];
+        Navigator.of(context).pushReplacement(routeTo(NoGame()));
       }
     }
   }
