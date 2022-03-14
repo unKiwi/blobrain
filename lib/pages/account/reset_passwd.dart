@@ -27,7 +27,7 @@ class _ResetPassword extends State<ResetPassword> {
   Future<void> sendReq(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       var res = await Http.req(
-        "resetPasswd",
+        "resetPassword",
         {
           "id": Data.id,
           "token": window.location.href.split('?')[1],

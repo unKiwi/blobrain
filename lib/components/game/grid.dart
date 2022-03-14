@@ -100,7 +100,37 @@ class _Case extends State<Case> {
         Navigator.of(context).pushReplacement(routeTo(Login()));
       }
       else if (data["res"] == "oldGame") {
-        Navigator.of(context).pushReplacement(routeTo(Game()));
+        Data.inGame = false;
+        Data.updateGameState(data["game"]);
+        await showDialog<void>(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              backgroundColor: Style.bgPopup,
+              content: Text(
+                "Cette grille n'est plus d'actualité, vous l'avez déjà terminé",
+                textScaleFactor: 2,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 87, 168, 91),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Data.inGame = true;
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(routeTo(Game()));
+                  },
+                  child: Text(
+                    'Continuer',
+                    textScaleFactor: 2,
+                  ),
+                ),
+              ],
+            );
+          },
+          barrierDismissible: false,
+        );
       }
       else if (data["res"] == "gridError") {
         Data.error = {
@@ -158,10 +188,7 @@ class _Case extends State<Case> {
             );
           },
           barrierDismissible: false,
-        ).then((val) {
-          Data.inGame = true;
-          Navigator.of(context).pushReplacement(routeTo(Game()));
-        });
+        );
       }
       else if (data["res"] == "noGame") {
         Data.timeToReset = data["timeToReset"];

@@ -5,7 +5,7 @@ import 'package:adn2/pages/no_game.dart';
 import 'package:adn2/pages/ps_work/admin.dart';
 import 'package:adn2/pages/ps_work/game.dart';
 import 'package:adn2/pages/ps_work/pro.dart';
-import 'package:adn2/pages/verif_mail.dart';
+import 'package:adn2/pages/account/verif_mail.dart';
 import 'package:flutter/material.dart';
 
 Route routeTo(Widget page) {

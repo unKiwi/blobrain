@@ -22,6 +22,15 @@ class _CreateInviteAdminState extends State<CreateInviteAdmin> {
   final nameController = TextEditingController();
 
   Future<void> sendReq(BuildContext context) async {
+    String accountType;
+
+    if (_character == SingingCharacter.pro) {
+      accountType = "pro";
+    }
+    else {
+      accountType = "user";
+    }
+
     final res = await http.post(
       Uri.parse(Conf.uri + 'createInvite'),
       headers: <String, String>{
@@ -29,7 +38,7 @@ class _CreateInviteAdminState extends State<CreateInviteAdmin> {
       },
       body: jsonEncode({
         'id': Data.id,
-        'role': _character,
+        'role': accountType,
         'nbUser': nbUserController.text,
         'name': nameController.text,
       }),
@@ -38,8 +47,8 @@ class _CreateInviteAdminState extends State<CreateInviteAdmin> {
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
       if (data['res'] == "ok") {
-        // Navigator.of(context).pop();
-        // Clipboard.setData(ClipboardData(text: "your text"));
+        Navigator.of(context).pop();
+        Clipboard.setData(ClipboardData(text: data['token']));
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Style.bgPopup,

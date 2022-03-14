@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: avoid_function_literals_in_foreach_calls, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables, use_key_in_widget_constructors
 
 import 'dart:convert';
 
@@ -35,7 +35,7 @@ class LsInvite extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> _children = [];
     Data.lsInvite.forEach((invite) => {
-      _children.add(ListEntity())
+      _children.add(ListEntity(invite))
     });
 
     return Expanded(
@@ -48,6 +48,9 @@ class LsInvite extends StatelessWidget {
 }
 
 class ListEntity extends StatelessWidget {
+  var invite;
+  ListEntity(this.invite);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,15 +60,15 @@ class ListEntity extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("invite"),
-              Text("role"),
+              Text(invite['token']),
+              Text(invite['role']),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("nom"),
-              Text("nbUser"),
+              Text(invite['name']),
+              Text(invite['nbUserMax'].toString()),
             ],
           ),
         ],
