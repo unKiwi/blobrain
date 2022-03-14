@@ -38,8 +38,8 @@ class _CreateInviteAdminState extends State<CreateInviteAdmin> {
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
       if (data['res'] == "ok") {
-        Navigator.of(context).pop();
-        Clipboard.setData(ClipboardData(text: "your text"));
+        // Navigator.of(context).pop();
+        // Clipboard.setData(ClipboardData(text: "your text"));
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Style.bgPopup,
