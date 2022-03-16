@@ -1,89 +1,95 @@
-// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields, curly_braces_in_flow_control_structures
 
 import 'package:adn2/components/admin/create_invite.dart';
-import 'package:adn2/components/admin/ls_invite.dart';
 import 'package:adn2/components/settings.dart';
-import 'package:adn2/data/style.dart';
+import 'package:adn2/data/data.dart';
 import 'package:adn2/data/util.dart';
 import 'package:flutter/material.dart';
 
 class Admin extends StatefulWidget {
   @override
-  State<Admin> createState() => _Admin();
+  State<Admin> createState() => _AdminState();
 }
 
-class _Admin extends State<Admin> {
-  int _selectedIndex = 0;
-  static TextStyle optionStyle =
-    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static final List<Widget> _widgetOptions = <Widget>[
-    LsInvite(),
-    Text(
-      'Arrive plus tard',
-      style: optionStyle,
-    ),
-  ];
+enum SingingCharacter { pro, user }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+class _AdminState extends State<Admin> {
+  SingingCharacter? _character = SingingCharacter.pro;
+  final nbUserController = TextEditingController();
+  final nameController = TextEditingController();
+  List<Widget> _form = [];
+
+  Widget _lsInvite = Container(
+    color: Colors.blueGrey,
+    height: 100,
+    width: 100,
+  );
+  Widget _lsUser = Container(
+    color: Colors.red,
+    height: 100,
+    width: 100,
+  );
+
+  late Widget _body;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _body = _lsUser;
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    nameController.dispose();
+    nbUserController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Style.bgPrimary,
       appBar: AppBar(
-        title: Text('Admin'),
+        title: Text("${Data.type[0].toUpperCase()}${Data.type.substring(1).toLowerCase()}"),
         actions: [
-          AspectRatio(
-            aspectRatio: 1 / 1,
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                primary: Colors.blue[700],
-                padding: EdgeInsets.all(0),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(routeTo(Settings()));
-              },
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return Icon(
-                    Icons.settings,
-                    color: Style.borderCase,
-                    size: constraints.maxWidth * 0.7,
-                  );
-                }
-              ),
-            ),
+          IconButton(
+            icon: Icon(Icons.home),
+            onPressed: () {
+              setState(() {
+                _body = _lsUser;
+              });
+            },
           ),
+          IconButton(
+            icon: Icon(Icons.person_add_alt_sharp),
+            onPressed: () {
+              setState(() {
+                _body = _lsInvite;
+              });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              setState(() {
+                Navigator.of(context).pushReplacement(routeTo(Settings()));
+              });
+            },
+          )
         ],
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
-      ),
+      body: _body,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.of(context).push(routeTo(CreateInviteAdmin()));
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              content: CreateInvite(),
+            ),
+          );
         },
-        backgroundColor: Style.bgSecondary,
         child: Icon(Icons.add),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outline),
-            label: 'Invitation',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_rounded),
-            label: 'Utilisateur',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
       ),
     );
   }

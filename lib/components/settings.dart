@@ -6,6 +6,8 @@ import 'package:adn2/data/conf.dart';
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/util.dart';
 import 'package:adn2/pages/account/login.dart';
+import 'package:adn2/pages/ps_work/admin.dart';
+import 'package:adn2/pages/ps_work/game.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
@@ -74,6 +76,29 @@ class Settings extends StatelessWidget {
                 ),
               ),
             ),
+          ),
+          LayoutBuilder(
+            builder: (BuildContext context, BoxConstraints constraints) {
+              if (Data.type == "admin" || Data.type == "pro") {
+                return Row(
+                  children: [
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(routeTo(Game()));
+                      },
+                      child: Text("Jouer"),
+                    ),
+                    FloatingActionButton(
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(routeTo(Admin()));
+                      },
+                      child: Text("Mon espace"),
+                    ),
+                  ],
+                );
+              }
+              return Container();
+            }
           ),
         ],
       ),

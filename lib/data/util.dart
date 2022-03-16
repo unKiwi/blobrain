@@ -33,16 +33,12 @@ void nextPage(context, [data]) {
   else if (data['res'] == "verifAccount") {
     Navigator.of(context).pushReplacement(routeTo(VerifMail()));
   }
-  else if (data['res'] == "adminInfo") {
+  else if (data['res'] == "adminInfo" || data['res'] == "proInfo") {
     Data.updateGameState(data["game"]);
+    Data.type = data['res'].split('Info')[0];
     Data.lsUser = data["user"];
     Data.lsInvite = data["invite"];
     Navigator.of(context).pushReplacement(routeTo(Admin()));
-  }
-  else if (data['res'] == "proInfo") {
-    Data.updateGameState(data["game"]);
-
-    Navigator.of(context).pushReplacement(routeTo(Pro()));
   }
   else if (data['res'] == "userInfo") {
     Data.updateGameState(data["game"]);

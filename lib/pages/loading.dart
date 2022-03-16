@@ -26,13 +26,13 @@ class _Loading extends State<Loading> {
   double _opacity = 0;
   final now = DateTime.now().millisecondsSinceEpoch;
 
-  int _timeOut = 500; // 500
-  int _animationDuration = 1000; // 1000
+  int _timeOut = 0; // 500
+  int _animationDuration = 0; // 1000
   late int _totalDuration;
 
   @override
   void initState() {
-    _totalDuration = _timeOut + _animationDuration + 500; // 500
+    _totalDuration = _timeOut + _animationDuration + 0; // 500
 
     Timer(Duration(milliseconds: _timeOut), () => {
       setState(() => _opacity = 1),
