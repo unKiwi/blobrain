@@ -133,6 +133,7 @@ class _Case extends State<Case> {
         );
       }
       else if (data["res"] == "gridError") {
+        playSound("error.mp3");
         Data.error = {
           "type": data["type"],
           "num": data["num"],
@@ -152,6 +153,7 @@ class _Case extends State<Case> {
         Data.inGame = false;
         Data.updateGameState(data["game"]);
         
+        playSound("victory.mp3");
         await showDialog<void>(
           context: context,
           builder: (BuildContext context) {
@@ -268,6 +270,8 @@ class _Case extends State<Case> {
         onPressed: () {
           // case is empty
           if (!isPionVar) {
+            playSound("place.mp3");
+
             Data.pionVar.add({'x': x, 'y': y, 'color': Data.currentColor, 'shape': Data.currentShape});
           }
           // case is not empty
@@ -277,6 +281,8 @@ class _Case extends State<Case> {
                 if (p["color"] != Data.currentColor || p["shape"] != Data.currentShape) {
                   if (Data.currentColor == 0 && Data.currentShape == 0) {
                     // remove pion
+                    playSound("fac.mp3");
+
                     Data.pionVar.removeWhere((e) => e == p);
                     Data.error = {
                       "type": "rien",
@@ -284,6 +290,9 @@ class _Case extends State<Case> {
                   }
                   else {
                     // update pion
+                    playSound("fac.mp3");
+                    playSound("place.mp3");
+
                     p['color'] = Data.currentColor;
                     p['shape'] = Data.currentShape;
                   }

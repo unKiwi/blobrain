@@ -4,8 +4,8 @@ import 'package:adn2/pages/loading.dart';
 import 'package:adn2/pages/no_game.dart';
 import 'package:adn2/pages/ps_work/admin.dart';
 import 'package:adn2/pages/ps_work/game.dart';
-import 'package:adn2/pages/ps_work/pro.dart';
 import 'package:adn2/pages/account/verif_mail.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 
 Route routeTo(Widget page) {
@@ -55,4 +55,10 @@ void nextPage(context, [data]) {
   else {
     Navigator.of(context).pushReplacement(routeTo(Loading()));
   }
+}
+
+void playSound(String audioAsset) async {
+  AudioCache player = AudioCache();
+  var alarmAudioPath = "sound/$audioAsset";
+  player.play(alarmAudioPath);
 }

@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.4
   shared_preferences: ^2.0.12
   syncfusion_flutter_gauges: ^19.4.48
+  audioplayers: ^0.20.1
 
 dev_dependencies:
   flutter_test:
@@ -71,6 +72,7 @@ flutter:
     - assets/shapes/square/
     - assets/shapes/pentagone/
     - assets/shapes/hexagone/
+    - assets/sound/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
