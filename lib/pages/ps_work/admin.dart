@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields, curly_braces_in_flow_control_structures
 
 import 'package:adn2/components/admin/create_invite.dart';
+import 'package:adn2/components/admin/ls_invite.dart';
+import 'package:adn2/components/admin/ls_user.dart';
 import 'package:adn2/components/settings.dart';
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/util.dart';
@@ -17,26 +19,13 @@ class _AdminState extends State<Admin> {
   SingingCharacter? _character = SingingCharacter.pro;
   final nbUserController = TextEditingController();
   final nameController = TextEditingController();
-  List<Widget> _form = [];
-
-  Widget _lsInvite = Container(
-    color: Colors.blueGrey,
-    height: 100,
-    width: 100,
-  );
-  Widget _lsUser = Container(
-    color: Colors.red,
-    height: 100,
-    width: 100,
-  );
-
   late Widget _body;
 
   @override
   void initState() {
     super.initState();
 
-    _body = _lsUser;
+    _body = LsUser();
   }
 
   @override
@@ -57,7 +46,7 @@ class _AdminState extends State<Admin> {
             icon: Icon(Icons.home),
             onPressed: () {
               setState(() {
-                _body = _lsUser;
+                _body = LsUser();
               });
             },
           ),
@@ -65,7 +54,7 @@ class _AdminState extends State<Admin> {
             icon: Icon(Icons.person_add_alt_sharp),
             onPressed: () {
               setState(() {
-                _body = _lsInvite;
+                _body = LsInvite();
               });
             },
           ),

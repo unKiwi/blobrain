@@ -80,21 +80,25 @@ class Settings extends StatelessWidget {
           LayoutBuilder(
             builder: (BuildContext context, BoxConstraints constraints) {
               if (Data.type == "admin" || Data.type == "pro") {
-                return Row(
-                  children: [
-                    FloatingActionButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(routeTo(Game()));
-                      },
-                      child: Text("Jouer"),
-                    ),
-                    FloatingActionButton(
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(routeTo(Admin()));
-                      },
-                      child: Text("Mon espace"),
-                    ),
-                  ],
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(routeTo(Game()));
+                        },
+                        child: Text("Jouer"),
+                      ),
+                      SizedBox(height: 40,),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(routeTo(Admin()));
+                        },
+                        child: Text("Mon espace"),
+                      ),
+                    ],
+                  ),
                 );
               }
               return Container();

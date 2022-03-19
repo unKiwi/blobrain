@@ -48,6 +48,13 @@ class VerifMail extends StatelessWidget {
                             color: Colors.white,
                           ),
                         ),
+                        Text(
+                          "(et vos spams)",
+                          textScaleFactor: 1,
+                          style: TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
                         SizedBox(height: 40,),
                         Container(
                           height: 50.0,

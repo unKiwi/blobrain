@@ -193,6 +193,7 @@ class _Case extends State<Case> {
         );
       }
       else if (data["res"] == "noGame") {
+        ////////////////////////////////////////
         Data.timeToReset = data["timeToReset"];
         Navigator.of(context).pushReplacement(routeTo(NoGame()));
       }

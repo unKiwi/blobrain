@@ -46,10 +46,12 @@ void nextPage(context, [data]) {
     Navigator.of(context).pushReplacement(routeTo(Game()));
   }
   else if (data['res'] == "noGame") {
+    Data.type = "user";
     Data.timeToReset = data["timeToReset"];
     Navigator.of(context).pushReplacement(routeTo(NoGame()));
   }
   else if (data['res'] == "testOver") {
+    Data.type = "user";
     Navigator.of(context).pushReplacement(routeTo(Buy()));
   }
   else {
