@@ -17,11 +17,11 @@ class CreateInvite extends StatefulWidget {
 enum SingingCharacter { pro, user }
 
 class _CreateInviteState extends State<CreateInvite> {
-  SingingCharacter? _character = SingingCharacter.pro;
+  SingingCharacter? _character = SingingCharacter.user;
+  double nbUserOpacity = 0;
+  final isAdmin = Data.type == "admin";
   final nbUserController = TextEditingController();
   final nameController = TextEditingController();
-
-  List<Widget> _form = [];
 
   Future<void> sendReq(BuildContext context) async {
     String accountType;
@@ -74,102 +74,103 @@ class _CreateInviteState extends State<CreateInvite> {
 
   @override
   Widget build(BuildContext context) {
-    _form = [];
-    _form.add(
-      Center(
-        child: Text('Créer un utilisateur', textScaleFactor: 1.5, style: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),),
-      ),
-    );
-    if (Data.type == "admin") _form.add(
-      Text("Type d'utilisateur"),
-    );
-    if (Data.type == "admin") _form.add(
-      Container(
-        color: Colors.grey[200],
-        margin: EdgeInsets.only(top: 10),
-        child: ListTile(
-          title: Text('Professionnel'),
-          leading: Radio<SingingCharacter>(
-            value: SingingCharacter.pro,
-            groupValue: _character,
-            onChanged: (SingingCharacter? value) {
-              setState(() {
-                _character = value;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-    if (Data.type == "admin") _form.add(
-      Container(
-        color: Colors.grey[200],
-        margin: EdgeInsets.only(top: 10),
-        child: ListTile(
-          title: Text('Joueur'),
-          leading: Radio<SingingCharacter>(
-            value: SingingCharacter.user,
-            groupValue: _character,
-            onChanged: (SingingCharacter? value) {
-              setState(() {
-                _character = value;
-              });
-            },
-          ),
-        ),
-      ),
-    );
-    _form.add(
-      Container(
-        margin: EdgeInsets.only(top: 10, bottom: 10),
-        child: TextField(
-          controller: nameController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Nom',
-          ),
-        ),
-      ),
-    );
-    if (Data.type == "admin") _form.add(
-      Container(
-        margin: EdgeInsets.only(bottom: 10),
-        child: TextField(
-          controller: nbUserController,
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Nombre d\'utilisateur',
-          ),
-        ),
-      ),
-    );
-    _form.add(
-      Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: Text('Annuler'),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              // Navigator.pop(context);
-              sendReq(context);
-            },
-            child: Text('Créer'),
-          ),
-        ],
-      )
-    );
-
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: _form,
+      children: [
+        Center(
+          child: Text('Créer un utilisateur', textScaleFactor: 1.5, style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),),
+        ),
+        Visibility(
+          visible: isAdmin,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Type d'utilisateur"),
+              Container(
+                color: Colors.grey[200],
+                margin: EdgeInsets.only(top: 10),
+                child: ListTile(
+                  title: Text('Joueur'),
+                  leading: Radio<SingingCharacter>(
+                    value: SingingCharacter.user,
+                    groupValue: _character,
+                    onChanged: (SingingCharacter? value) {
+                      setState(() {
+                        _character = value;
+                        nbUserOpacity = 0;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              Container(
+                color: Colors.grey[200],
+                margin: EdgeInsets.only(top: 10),
+                child: ListTile(
+                  title: Text('Professionnel'),
+                  leading: Radio<SingingCharacter>(
+                    value: SingingCharacter.pro,
+                    groupValue: _character,
+                    onChanged: (SingingCharacter? value) {
+                      setState(() {
+                        _character = value;
+                        nbUserOpacity = 1;
+                      });
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 10, bottom: 10),
+          child: TextField(
+            controller: nameController,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Nom',
+            ),
+          ),
+        ),
+        Visibility(
+          visible: isAdmin,
+          child: Opacity(
+            opacity: nbUserOpacity,
+            child: Container(
+              margin: EdgeInsets.only(bottom: 10),
+              child: TextField(
+                controller: nbUserController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Nombre d\'utilisateur',
+                ),
+              ),
+            ),
+          ),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Annuler'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.pop(context);
+                sendReq(context);
+              },
+              child: Text('Créer'),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
