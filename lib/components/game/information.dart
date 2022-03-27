@@ -32,7 +32,7 @@ class Information extends StatelessWidget {
                   children: [
                     Flexible(
                       child: Text(
-                        "A D N ²",
+                        "Blobrain",
                         style: TextStyle(
                           color: Color(0xFF00B177),
                           fontSize: _textHeight,
