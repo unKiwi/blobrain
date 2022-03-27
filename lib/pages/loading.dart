@@ -155,7 +155,7 @@ class _Loading extends State<Loading> {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Text(
-                          "A D N ²",
+                          "Blobrain",
                           style: TextStyle(
                             fontSize: MediaQuery.of(context).size.height,
                             color: Colors.white,
