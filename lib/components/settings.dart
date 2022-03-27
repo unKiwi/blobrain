@@ -28,8 +28,8 @@ class Settings extends StatelessWidget {
 
     if (res.statusCode == 200) {
       Data.type = "user";
-      Data.lsInvite.clear();
-      Data.lsUser.clear();
+      // Data.lsInvite.clear();
+      // Data.lsUser.clear();
 
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacement(routeTo(Login()));
