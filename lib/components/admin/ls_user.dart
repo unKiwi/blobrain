@@ -5,10 +5,15 @@ import 'package:adn2/data/http.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class LsUser extends StatelessWidget {
+class LsUser extends StatefulWidget {
+  @override
+  State<LsUser> createState() => _LsUserState();
+}
+
+class _LsUserState extends State<LsUser> {
   Future<void> sendReq(String email) async {
     var res = await Http.req(
-      "deleteInvite",
+      "deleteUser",
       {
         "id": Data.id,
         "email": email,
@@ -18,11 +23,13 @@ class LsUser extends StatelessWidget {
     if (res != "ko") {
       final data = jsonDecode(res.body);
       if (data['res'] == "ok") {
-        print(1);
+        setState(() {
+          Data.lsUser.removeWhere((user) => user["email"] == email);
+        });
       }
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     List<DataRow> _users = [];

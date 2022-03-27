@@ -242,63 +242,35 @@ class _Register extends State<Register> {
                           ),
                         ),
                         const SizedBox(height: 40,),
-                        Container(
-                          height: 50.0,
-                          margin: const EdgeInsets.all(10),
-                          child: RaisedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                if (passwordController.text == passwordConfirmController.text) {
-                                  req(context);
-                                }
-                                else {
-                                  await showDialog<void>(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Erreur !'),
-                                        content: Text(
-                                          "Mot de passe non identique",
-                                          style: TextStyle(color: Colors.red.shade500),
-                                        ),
-                                        actions: <Widget>[
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      );
-                                    },
+                        BtnPrimary(text: "M'inscrire", onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            if (passwordController.text == passwordConfirmController.text) {
+                              req(context);
+                            }
+                            else {
+                              await showDialog<void>(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text('Erreur !'),
+                                    content: Text(
+                                      "Mot de passe non identique",
+                                      style: TextStyle(color: Colors.red.shade500),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
                                   );
-                                }
-                              }
-                            },
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(80.0)),
-                            padding: const EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                    colors: [Color(0xff374ABE), Color(0xff64B6FF)],
-                                    begin: Alignment.centerLeft,
-                                    end: Alignment.centerRight,
-                                  ),
-                                  borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: const Text(
-                                  "M'inscrire",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
+                                },
+                              );
+                            }
+                          }
+                        }),
                         SizedBox(height: 40,),
                         TextButton(
                           onPressed: () {

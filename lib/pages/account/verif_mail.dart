@@ -56,57 +56,31 @@ class VerifMail extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 40,),
-                        Container(
-                          height: 50.0,
-                          margin: EdgeInsets.all(10),
-                          child: RaisedButton(
-                            onPressed: () async {
-                              var res = await Http.req(
-                                "resendMail",
-                                {
-                                  "id": Data.id,
-                                },
-                              );
+                        BtnPrimary(
+                          text: "Renvoyer l'email",
+                          onPressed: () async {
+                            var res = await Http.req(
+                              "resendMail",
+                              {
+                                "id": Data.id,
+                              },
+                            );
 
-                              if (res != "ko") {
-                                final data = jsonDecode(res.body);
-                                if (data["res"] == "ok") {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      backgroundColor: Style.bgPopup,
-                                      content: Text("Email envoyé"),
-                                    ),
-                                  );
-                                }
-                                else {
-                                  nextPage(context, data);
-                                }
+                            if (res != "ko") {
+                              final data = jsonDecode(res.body);
+                              if (data["res"] == "ok") {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Style.bgPopup,
+                                    content: Text("Email envoyé"),
+                                  ),
+                                );
                               }
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(80.0),
-                            ),
-                            padding: const EdgeInsets.all(0.0),
-                            child: Ink(
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [Color(0xff374ABE), Color(0xff64B6FF)],
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                ),
-                                borderRadius: BorderRadius.circular(30.0)),
-                              child: Container(
-                                constraints:
-                                  BoxConstraints(maxWidth: 250.0, minHeight: 50.0),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "Renvoyer l'email",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
-                                ),
-                              ),
-                            ),
-                          ),
+                              else {
+                                nextPage(context, data);
+                              }
+                            }
+                          },
                         ),
                       ],
                     ),

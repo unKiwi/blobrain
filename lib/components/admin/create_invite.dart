@@ -49,6 +49,8 @@ class _CreateInviteState extends State<CreateInvite> {
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
       if (data['res'] == "ok") {
+        Data.lsInvite.add({"name": nameController.text, "token": data['token']});
+
         Navigator.of(context).pop();
         Clipboard.setData(ClipboardData(text: "${Conf.url}register?${data['token']}"));
         ScaffoldMessenger.of(context).showSnackBar(
@@ -163,7 +165,6 @@ class _CreateInviteState extends State<CreateInvite> {
             ),
             ElevatedButton(
               onPressed: () {
-                // Navigator.pop(context);
                 sendReq(context);
               },
               child: Text('Créer'),

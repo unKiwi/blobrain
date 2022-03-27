@@ -25,7 +25,9 @@ class _LsInviteState extends State<LsInvite> {
     if (res != "ko") {
       final data = jsonDecode(res.body);
       if (data['res'] == "ok") {
-        print(1);
+        setState(() {
+          Data.lsInvite.removeWhere((element) => element["token"] == invite);
+        });
       }
     }
   }

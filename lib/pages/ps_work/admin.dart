@@ -70,13 +70,16 @@ class _AdminState extends State<Admin> {
       ),
       body: _body,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog<String>(
+        onPressed: () async {
+          await showDialog<String>(
             context: context,
             builder: (BuildContext context) => AlertDialog(
               content: CreateInvite(),
             ),
           );
+          setState(() {
+            _body = LsInvite();
+          });
         },
         child: Icon(Icons.add),
       ),

@@ -1,4 +1,4 @@
 class Conf {
-  static get uri => "https://dev.adn2.ovh/api/";
-  static get url => "https://dev.adn2.ovh/";
+  static get uri => "https://dev.blobrain.com/api/";
+  static get url => "https://dev.blobrain.com/";
 }

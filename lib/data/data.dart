@@ -3,7 +3,7 @@
 class Data {
   // user
   static late String id;
-  static late String type;
+  static String type = "user";
   static late List lsUser;
   static late List lsInvite;
   static bool inGame = true;
