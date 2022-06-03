@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:adn2/data/data.dart';
 import 'package:adn2/data/http.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LsUser extends StatefulWidget {
@@ -37,6 +36,8 @@ class _LsUserState extends State<LsUser> {
       _users.add(DataRow(cells: [
         DataCell(Text(user["prenom"] ?? ""),),
         DataCell(Text(user["email"] ?? ""),),
+        DataCell(Text(user["nbGameByDay"].toString() ?? ""),),
+        DataCell(Text('${((user["avgTimeByGrid"]) ~/ 60).toString().padLeft(2, '0')}:${((user["avgTimeByGrid"]) % 60).toString().padLeft(2, '0')}' ?? ""),),
         DataCell(Center(
           child: IconButton(
             onPressed: () {
@@ -55,6 +56,8 @@ class _LsUserState extends State<LsUser> {
             columns: [
               DataColumn(label: Text("Nom")),
               DataColumn(label: Text("Mail")),
+              DataColumn(label: Text("Partie")),
+              DataColumn(label: Text("Temps")),
               DataColumn(label: Text("Supprimer")),
             ],
             rows: _users,

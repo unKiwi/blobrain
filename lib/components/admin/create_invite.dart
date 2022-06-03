@@ -148,7 +148,7 @@ class _CreateInviteState extends State<CreateInvite> {
                 controller: nbUserController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Nombre d\'utilisateur',
+                  labelText: 'Nombre d\'utilisateurs',
                 ),
               ),
             ),

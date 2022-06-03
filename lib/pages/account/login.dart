@@ -175,19 +175,19 @@ class _Login extends State<Login> {
                             }
                           }
                         ),
-                        SizedBox(height: 40,),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.of(context).push(routeTo(Register()));
-                          },
-                          child: Text("Inscription", style: TextStyle(color: Colors.grey),),
-                        ),
                         SizedBox(height: 20,),
                         TextButton(
                           onPressed: () {
                             Navigator.of(context).push(routeTo(ForgotPassword()));
                           },
                           child: Text("Mot de passe oublié", style: TextStyle(color: Colors.grey),),
+                        ),
+                        SizedBox(height: 40,),
+                        BtnSecondary(
+                          text: "Inscription",
+                          onPressed: () {
+                            Navigator.of(context).push(routeTo(Register()));
+                          }
                         ),
                       ],
                     ),

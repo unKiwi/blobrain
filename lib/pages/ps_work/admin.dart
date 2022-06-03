@@ -62,7 +62,7 @@ class _AdminState extends State<Admin> {
             icon: Icon(Icons.settings),
             onPressed: () {
               setState(() {
-                Navigator.of(context).pushReplacement(routeTo(Settings()));
+                Navigator.of(context).push(routeTo(Settings()));
               });
             },
           )

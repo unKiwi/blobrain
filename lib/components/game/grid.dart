@@ -108,7 +108,7 @@ class _Case extends State<Case> {
             return AlertDialog(
               backgroundColor: Style.bgPopup,
               content: Text(
-                "Cette grille n'est plus d'actualité, vous l'avez déjà terminé",
+                "Vous avez déjà fini cette grille",
                 textScaleFactor: 2,
                 style: TextStyle(
                   color: Color.fromARGB(255, 87, 168, 91),

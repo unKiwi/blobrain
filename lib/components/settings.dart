@@ -90,6 +90,7 @@ class Settings extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(routeTo(Game()));
                         },
                         child: Text("Jouer"),
@@ -97,6 +98,7 @@ class Settings extends StatelessWidget {
                       SizedBox(height: 40,),
                       ElevatedButton(
                         onPressed: () {
+                          Navigator.of(context).pop();
                           Navigator.of(context).pushReplacement(routeTo(Admin()));
                         },
                         child: Text("Mon espace"),

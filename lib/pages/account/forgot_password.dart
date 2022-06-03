@@ -142,11 +142,11 @@ class _ForgotPassword extends State<ForgotPassword> {
                           sendReq(context);
                         }),
                         SizedBox(height: 40,),
-                        TextButton(
+                        BtnSecondary(
+                          text: "Connexion",
                           onPressed: () {
                             Navigator.of(context).pop();
-                          },
-                          child: Text("Connexion", style: TextStyle(color: Colors.grey),),
+                          }
                         ),
                       ],
                     ),
