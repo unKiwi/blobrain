@@ -118,7 +118,7 @@ class _Case extends State<Case> {
                 TextButton(
                   onPressed: () {
                     Data.inGame = true;
-                    Navigator.of(context).pop();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                     Navigator.of(context).pushReplacement(routeTo(Game()));
                   },
                   child: Text(
@@ -178,7 +178,7 @@ class _Case extends State<Case> {
                 TextButton(
                   onPressed: () {
                     Data.inGame = true;
-                    Navigator.of(context).pop();
+                    Navigator.of(context).popUntil((route) => route.isFirst);
                     Navigator.of(context).pushReplacement(routeTo(Game()));
                   },
                   child: Text(

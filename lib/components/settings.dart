@@ -90,7 +90,7 @@ class Settings extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).popUntil((route) => route.isFirst);
                           Navigator.of(context).pushReplacement(routeTo(Game()));
                         },
                         child: Text("Jouer"),

@@ -43,6 +43,7 @@ void nextPage(context, [data]) {
   else if (data['res'] == "userInfo") {
     Data.updateGameState(data["game"]);
 
+    Navigator.of(context).popUntil((route) => route.isFirst);
     Navigator.of(context).pushReplacement(routeTo(Game()));
   }
   else if (data['res'] == "noGame") {
