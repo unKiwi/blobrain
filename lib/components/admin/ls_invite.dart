@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class LsInvite extends StatefulWidget {
+  const LsInvite({Key? key}) : super(key: key);
+
   @override
   State<LsInvite> createState() => _LsInviteState();
 }
@@ -35,7 +37,7 @@ class _LsInviteState extends State<LsInvite> {
   @override
   Widget build(BuildContext context) {
     List<DataRow> _invites = [];
-    Data.lsInvite.forEach((user) {
+    for (var user in Data.lsInvite) {
       _invites.add(DataRow(cells: [
         DataCell(Text(user["name"] ?? ""),),
         DataCell(TextButton(
@@ -44,7 +46,7 @@ class _LsInviteState extends State<LsInvite> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Style.bgPopup,
-                content: Text(
+                content: const Text(
                   "Invitation copié dans le presse papier",
                   textScaleFactor: 2,
                 ),
@@ -58,17 +60,17 @@ class _LsInviteState extends State<LsInvite> {
             onPressed: () {
               sendReq(user["token"] ?? "");
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ),),
       ]));
-    });
+    }
 
     return ListView(
       children: [
         Center(
           child: DataTable(
-            columns: [
+            columns: const [
               DataColumn(label: Text("Nom")),
               DataColumn(label: Text("Invitation")),
               DataColumn(label: Text("Supprimer")),

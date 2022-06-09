@@ -1,4 +1,4 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_constructors, must_be_immutable
 
 import 'dart:convert';
 
@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class BtnGivUp extends StatelessWidget {
+  bool giveUpIsClicked = false;
+
   Future<void> req(BuildContext context) async {
     final res = await http.post(
       Uri.parse(Conf.uri + 'giveUp'),
@@ -80,7 +82,10 @@ class BtnGivUp extends StatelessWidget {
                       ),
                       TextButton(
                         onPressed: () {
-                          req(context);
+                          if (!giveUpIsClicked) {
+                            giveUpIsClicked = true;
+                            req(context);
+                          }
                         },
                         child: Text('Continuer', textScaleFactor: 2,),
                       ),

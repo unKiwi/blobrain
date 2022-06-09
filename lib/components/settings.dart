@@ -4,6 +4,8 @@ import 'dart:convert';
 
 import 'package:adn2/data/conf.dart';
 import 'package:adn2/data/data.dart';
+import 'package:adn2/data/http.dart';
+import 'package:adn2/data/style.dart';
 import 'package:adn2/data/util.dart';
 import 'package:adn2/pages/account/login.dart';
 import 'package:adn2/pages/ps_work/admin.dart';
@@ -88,21 +90,25 @@ class Settings extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      ElevatedButton(
-                        onPressed: () {
+                      BtnPrimary(text: "Commencer une demo", onPressed: () async {
+                        var res = await Http.req(
+                          "startDemo",
+                          {'id': Data.id,},
+                        );
+
+                        if (res.statusCode == 200) {
+                          final data = jsonDecode(res.body);
+                          Data.updateGameState(data["game"]);
+
                           Navigator.of(context).popUntil((route) => route.isFirst);
                           Navigator.of(context).pushReplacement(routeTo(Game()));
-                        },
-                        child: Text("Jouer"),
-                      ),
+                        }
+                      }),
                       SizedBox(height: 40,),
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pushReplacement(routeTo(Admin()));
-                        },
-                        child: Text("Mon espace"),
-                      ),
+                      BtnPrimary(text: "Mon espace", onPressed: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pushReplacement(routeTo(Admin()));
+                      }),
                     ],
                   ),
                 );

@@ -1,4 +1,5 @@
 class Conf {
-  static get uri => "https://dev.blobrain.com/api/";
-  static get url => "https://dev.blobrain.com/";
+  static get isProduction => true;
+  static String uri = Conf.isProduction ? "https://blobrain.com/api/" : "https://dev.blobrain.com/api/";
+  static String url = Conf.isProduction ? "https://blobrain.com/" : "https://dev.blobrain.com/";
 }

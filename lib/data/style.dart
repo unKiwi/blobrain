@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, must_be_immutable, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 
@@ -22,15 +22,15 @@ class BtnPrimary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               color: Colors.black26, offset: Offset(0, 4), blurRadius: 5.0)
         ],
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.0, 1.0],
-          colors: [
+          stops: const [0.0, 1.0],
+          colors: const [
             Color(0xff374ABE), Color(0xff64B6FF)
           ],
         ),
@@ -81,15 +81,15 @@ class BtnSecondary extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
               color: Colors.black26, offset: Offset(0, 4), blurRadius: 5.0)
         ],
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          stops: [0.0, 1.0],
-          colors: [
+          stops: const [0.0, 1.0],
+          colors: const [
             Color.fromARGB(255, 22, 128, 113), Color.fromARGB(255, 55, 190, 172)
           ],
         ),

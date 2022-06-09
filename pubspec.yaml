@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.12
   syncfusion_flutter_gauges: ^19.4.48
   audioplayers: ^0.20.1
+  dart_ping: ^6.1.2
 
 dev_dependencies:
   flutter_test:

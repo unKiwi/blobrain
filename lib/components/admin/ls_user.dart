@@ -5,6 +5,8 @@ import 'package:adn2/data/http.dart';
 import 'package:flutter/material.dart';
 
 class LsUser extends StatefulWidget {
+  const LsUser({Key? key}) : super(key: key);
+
   @override
   State<LsUser> createState() => _LsUserState();
 }
@@ -32,28 +34,28 @@ class _LsUserState extends State<LsUser> {
   @override
   Widget build(BuildContext context) {
     List<DataRow> _users = [];
-    Data.lsUser.forEach((user) {
+    for (var user in Data.lsUser) {
       _users.add(DataRow(cells: [
         DataCell(Text(user["prenom"] ?? ""),),
         DataCell(Text(user["email"] ?? ""),),
-        DataCell(Text(user["nbGameByDay"].toString() ?? ""),),
-        DataCell(Text('${((user["avgTimeByGrid"]) ~/ 60).toString().padLeft(2, '0')}:${((user["avgTimeByGrid"]) % 60).toString().padLeft(2, '0')}' ?? ""),),
+        DataCell(Text(user["nbGameByDay"].toString()),),
+        DataCell(Text('${((user["avgTimeByGrid"]) ~/ 60).toString().padLeft(2, '0')}:${((user["avgTimeByGrid"]) % 60).toString().padLeft(2, '0')}'),),
         DataCell(Center(
           child: IconButton(
             onPressed: () {
               sendReq(user["email"] ?? "");
             },
-            icon: Icon(Icons.delete),
+            icon: const Icon(Icons.delete),
           ),
         ),),
       ]));
-    });
+    }
 
     return ListView(
       children: [
         Center(
           child: DataTable(
-            columns: [
+            columns: const [
               DataColumn(label: Text("Nom")),
               DataColumn(label: Text("Mail")),
               DataColumn(label: Text("Partie")),

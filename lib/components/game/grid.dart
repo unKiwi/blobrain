@@ -144,14 +144,20 @@ class _Case extends State<Case> {
           Data.error = null
         });
       }
-      else if (data["res"] == "newGame") {
+      else if (data["res"] == "newGame" || data["res"] == "noGame") {
         Data.error = {
           "type": "rien",
         };
         
         int lastTimer = Data.timerSeconds;
         Data.inGame = false;
-        Data.updateGameState(data["game"]);
+
+        if (data["res"] == "newGame") {
+          Data.updateGameState(data["game"]);
+        }
+        else {
+          Data.timeToReset = data["timeToReset"];
+        }
         
         playSound("victory.mp3");
         await showDialog<void>(
@@ -177,9 +183,14 @@ class _Case extends State<Case> {
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
-                    Data.inGame = true;
-                    Navigator.of(context).popUntil((route) => route.isFirst);
-                    Navigator.of(context).pushReplacement(routeTo(Game()));
+                    if (data["res"] == "newGame") {
+                      Data.inGame = true;
+                      Navigator.of(context).popUntil((route) => route.isFirst);
+                      Navigator.of(context).pushReplacement(routeTo(Game()));
+                    }
+                    else {
+                      Navigator.of(context).pushReplacement(routeTo(NoGame()));
+                    }
                   },
                   child: Text(
                     'Continuer',
@@ -191,11 +202,6 @@ class _Case extends State<Case> {
           },
           barrierDismissible: false,
         );
-      }
-      else if (data["res"] == "noGame") {
-        ////////////////////////////////////////
-        Data.timeToReset = data["timeToReset"];
-        Navigator.of(context).pushReplacement(routeTo(NoGame()));
       }
     }
   }
